@@ -1,0 +1,262 @@
+/* Existing Navbar Styles... */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 24px;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    width: 280px;
+    /* Match sidebar width */
+}
+
+.menu-toggle-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    padding: 8px;
+    margin-right: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.menu-toggle-btn:hover {
+    background-color: var(--color-hover);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.reddit-icon {
+    width: 36px;
+    height: 36px;
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: -0.5px;
+    background: var(--color-primary-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.navbar-center {
+    flex: 1;
+    max-width: 640px;
+    margin: 0 24px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-bg);
+    border-radius: 24px;
+    padding: 0 20px;
+    height: 44px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.search-bar:hover,
+.search-bar:focus-within {
+    background-color: var(--color-surface);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+.search-icon {
+    color: var(--color-text-secondary);
+    margin-right: 12px;
+}
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    flex: 1;
+    height: 100%;
+    outline: none;
+    font-size: 15px;
+    color: var(--color-text-primary);
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-btn {
+    color: var(--color-text-secondary);
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.icon-btn:hover {
+    background-color: var(--color-hover);
+    color: var(--color-primary);
+}
+
+.create-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--color-text-primary);
+    transition: background-color 0.2s;
+}
+
+.create-btn:hover {
+    background-color: var(--color-hover);
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-primary-gradient);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.logout-btn {
+    padding: 10px;
+    border-radius: 50%;
+    color: var(--color-text-secondary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-btn:hover {
+    background-color: #FEE2E2;
+    color: #EF4444;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-btn {
+    padding: 8px 20px;
+    border-radius: 24px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.login-nav-btn {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.login-nav-btn:hover {
+    background-color: rgba(139, 92, 246, 0.05);
+}
+
+.signup-nav-btn {
+    background: var(--color-primary-gradient);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.signup-nav-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .menu-toggle-btn {
+        display: block;
+    }
+
+    .navbar-left {
+        width: auto;
+    }
+
+    /* Hide navbar right on mobile */
+    .navbar-right {
+        display: none;
+    }
+
+    /* Expand search bar to fill remaining space */
+    .navbar-center {
+        margin: 0 0 0 16px;
+    }
+
+    .navbar {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-text {
+        display: none;
+        /* Hide logo text on small screens to save space */
+    }
+
+    .navbar-center {
+        margin: 0 0 0 12px;
+    }
+
+    .search-bar {
+        padding: 0 12px;
+        height: 36px;
+    }
+
+    .navbar {
+        padding: 0 12px;
+        height: 56px;
+        /* Slightly shorter navbar */
+    }
+
+    .reddit-icon {
+        width: 32px;
+        height: 32px;
+    }
+}

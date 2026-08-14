@@ -1,0 +1,112 @@
+.sidebar {
+    width: 280px;
+    height: calc(100vh - 64px);
+    /* Adjusted for potentially taller navbar */
+    position: fixed;
+    top: 64px;
+    /* Navbar height */
+    left: 0;
+    background-color: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+    padding: 24px 16px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.sidebar-section {
+    margin-bottom: 32px;
+}
+
+.sidebar-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-text-secondary);
+    margin-bottom: 12px;
+    padding-left: 12px;
+    font-weight: 700;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s;
+    gap: 12px;
+    margin-bottom: 4px;
+    text-decoration: none;
+}
+
+.sidebar-item:hover {
+    background-color: var(--color-hover);
+    color: var(--color-text-primary);
+}
+
+.sidebar-item.active {
+    background: var(--color-primary-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.sidebar-item.active .icon {
+    color: white;
+    /* Ensure icon is white in active state */
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: inherit;
+}
+
+.sidebar-loading,
+.sidebar-empty-state {
+    padding: 12px;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    text-align: center;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+}
+
+.sidebar-empty-state p {
+    margin: 0;
+}
+
+.create-community-btn-sidebar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    gap: 12px;
+    margin-bottom: 8px;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.create-community-btn-sidebar:hover {
+    background-color: var(--color-hover);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.create-community-btn-sidebar .icon {
+    width: 20px;
+    height: 20px;
+    color: inherit;
+}

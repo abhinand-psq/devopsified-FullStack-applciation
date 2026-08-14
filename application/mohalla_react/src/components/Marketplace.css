@@ -1,0 +1,285 @@
+.marketplace-container {
+    padding: 0;
+    width: 100%;
+}
+
+/* Header Banner */
+.marketplace-header-banner {
+    background: linear-gradient(90deg, #6200EA 0%, #9D46FF 100%);
+    border-radius: 12px;
+    padding: 24px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.marketplace-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.marketplace-header-left {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.marketplace-header-icon {
+    background: rgba(255, 255, 255, 0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.marketplace-header-text h2 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.marketplace-header-text p {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.marketplace-stats {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
+}
+
+.marketplace-stats span {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.marketplace-stats strong {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.create-shop-btn-header {
+    background: white;
+    color: #6200EA;
+    border: none;
+    border-radius: 9999px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s;
+}
+
+.create-shop-btn-header:hover {
+    background-color: #f0f0f0;
+}
+
+/* Start Selling Banner */
+.start-selling-banner {
+    background-color: #F0F7FF;
+    border: 1px solid #D4E4F7;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.start-selling-content {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.start-selling-icon {
+    background-color: #E1EFFF;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0079D3;
+    flex-shrink: 0;
+}
+
+.start-selling-text h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1c1c1c;
+}
+
+.start-selling-text p {
+    margin: 0;
+    font-size: 14px;
+    color: #576f76;
+    max-width: 500px;
+    line-height: 1.4;
+}
+
+.create-shop-btn-blue {
+    background-color: #0079D3;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    padding: 8px 20px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.create-shop-btn-blue:hover {
+    background-color: #0060a8;
+}
+
+/* Browse Shops */
+.browse-shops-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1c1c1c;
+    margin: 0 0 16px 0;
+}
+
+
+.shop-card-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.shop-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.shop-info h4 {
+    margin: 0 0 2px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1c1c1c;
+}
+
+.shop-owner {
+    font-size: 12px;
+    color: #7c7c7c;
+}
+
+.shop-card-body {
+    flex: 1;
+    margin-bottom: 16px;
+}
+
+.shop-card-body p {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #576f76;
+    line-height: 1.4;
+}
+
+.shop-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.shop-tag {
+    background-color: #f6f7f8;
+    color: #576f76;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.shop-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #edeff1;
+    padding-top: 12px;
+}
+
+.product-count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #7c7c7c;
+    font-weight: 500;
+}
+
+.visit-shop-btn {
+    background: white;
+    border: 1px solid #ccc;
+    color: #1c1c1c;
+    border-radius: 9999px;
+    padding: 4px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.visit-shop-btn:hover {
+    background-color: #f6f7f8;
+    border-color: #898989;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .marketplace-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .start-selling-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .start-selling-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .start-selling-text p {
+        width: 100%;
+    }
+
+    .create-shop-btn-blue {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Shops Grid Responsiveness - Assuming a grid container exists or adding one */
+    .shops-grid {
+        grid-template-columns: 1fr;
+        /* Force single column on mobile */
+    }
+
+    /* Adjust padding if needed */
+    .marketplace-container {
+        padding: 0 8px;
+    }
+}

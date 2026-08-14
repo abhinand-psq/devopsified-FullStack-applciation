@@ -1,0 +1,144 @@
+/* Admin Dashboard Styling - Separate Module for distinct look */
+.admin-dashboard-container {
+    background: linear-gradient(135deg, #1a1a1b 0%, #272729 100%);
+    color: #d7dadc;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border: 1px solid #343536;
+    margin-bottom: 24px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 2px solid #343536;
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+}
+
+.admin-header-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 69, 0, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff4500;
+}
+
+.admin-header-text h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.admin-header-text p {
+    margin: 4px 0 0;
+    color: #818384;
+    font-size: 14px;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.admin-action-card {
+    background-color: #272729;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+    border: 1px solid #343536;
+    border-radius: 16px;
+    padding: 28px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #343536;
+    transition: background 0.3s;
+}
+
+.admin-action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border-color: #5f6163;
+    background-color: #2d2d2f;
+}
+
+.admin-action-card.delete-user:hover::before {
+    background: #ff4500;
+}
+
+.admin-action-card.delete-post:hover::before {
+    background: #ffb000;
+}
+
+.admin-card-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #343536;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.admin-action-card:hover .admin-card-icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.delete-user .admin-card-icon-wrapper {
+    color: #ff4500;
+    background-color: rgba(255, 69, 0, 0.1);
+}
+
+.delete-post .admin-card-icon-wrapper {
+    color: #ffb000;
+    background-color: rgba(255, 176, 0, 0.1);
+}
+
+.admin-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.admin-card-desc {
+    font-size: 13px;
+    color: #aaadb1;
+    line-height: 1.5;
+}

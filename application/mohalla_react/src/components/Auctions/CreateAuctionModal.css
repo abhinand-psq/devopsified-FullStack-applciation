@@ -1,0 +1,288 @@
+/* Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal Container */
+.create-auction-modal {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    /* Allow scrolling if content is tall */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    animation: scaleUp 0.2s ease-out;
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Header */
+.create-auction-modal .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.create-auction-modal .modal-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.create-auction-modal .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.create-auction-modal .modal-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+.create-auction-modal .close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.create-auction-modal .close-btn:hover {
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Scrollable Content */
+.create-auction-modal .modal-content {
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Form Groups */
+.create-auction-modal .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.create-auction-modal .form-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.create-auction-modal .required-asterisk {
+    color: #ef4444;
+    /* Red */
+    margin-left: 2px;
+}
+
+.create-auction-modal .form-helper {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* Input Styles */
+.create-auction-modal .form-input,
+.create-auction-modal .form-textarea {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1e293b;
+    transition: border-color 0.2s;
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.create-auction-modal .form-input:focus,
+.create-auction-modal .form-textarea:focus {
+    border-color: #00b894;
+    /* Teal focus */
+    box-shadow: 0 0 0 2px rgba(0, 184, 148, 0.1);
+}
+
+.create-auction-modal .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.create-auction-modal .char-count {
+    font-size: 12px;
+    color: #94a3b8;
+    text-align: right;
+    margin-top: 4px;
+}
+
+/* Image Upload */
+.create-auction-modal .image-upload-area {
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    height: 100px;
+    width: 100px;
+    color: #64748b;
+    box-sizing: border-box;
+}
+
+.create-auction-modal .image-upload-area:hover {
+    border-color: #00b894;
+    background-color: #f0fdf4;
+    color: #00b894;
+}
+
+.create-auction-modal .upload-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+}
+
+.create-auction-modal .upload-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Price Row */
+.create-auction-modal .form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.create-auction-modal .half-width {
+    flex: 1;
+}
+
+/* Note Box */
+.create-auction-modal .info-box {
+    background-color: #e6f7ff;
+    border: 1px solid #bae0ff;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 13px;
+    color: #0050b3;
+    line-height: 1.5;
+}
+
+.create-auction-modal .note-bold {
+    font-weight: 700;
+}
+
+/* Footer Actions */
+.create-auction-modal .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background-color: #f8fafc;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.create-auction-modal .btn-cancel {
+    padding: 8px 16px;
+    border: 1px solid #cbd5e1;
+    background: white;
+    border-radius: 6px;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.create-auction-modal .btn-cancel:hover {
+    background-color: #f1f5f9;
+}
+
+.create-auction-modal .btn-create {
+    padding: 8px 24px;
+    background-color: #00b894;
+    /* Teal */
+    border: 1px solid #00b894;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.create-auction-modal .btn-create:hover {
+    background-color: #00a383;
+}
+
+@media (max-width: 600px) {
+    .create-auction-modal .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .create-auction-modal .half-width {
+        width: 100%;
+    }
+
+    .create-auction-modal .modal-header {
+        padding: 16px;
+    }
+
+    .create-auction-modal .modal-content {
+        padding: 16px;
+    }
+}

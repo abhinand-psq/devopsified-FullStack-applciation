@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500;600&display=swap');
+
+.shop-page {
+    background-color: #ffffff;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: #1c1c1c;
+    position: relative;
+}
+
+/* Header */
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.shop-logo-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.logo-blur {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(200, 255, 0, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+    filter: blur(10px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.shop-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: #1c1c1c;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.shop-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #1c1c1c;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    transition: opacity 0.2s;
+}
+
+.nav-btn:hover {
+    opacity: 0.7;
+}
+
+.user-btn span {
+    font-weight: 300;
+}
+
+.cart-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.cart-count {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+}
+
+/* Adjust cart icon to look like a bag with count inside if possible, 
+   or just overlay. The SVG provided is a bag. 
+   Let's make the count look like it's inside the bag body. */
+.cart-btn svg {
+    fill: #1c1c1c;
+    /* Filled bag */
+    color: #1c1c1c;
+}
+
+.cart-count {
+    color: white;
+    font-size: 11px;
+    transform: translate(-50%, -35%);
+    /* Adjust based on SVG shape */
+}
+
+/* Menu button */
+.menu-btn svg {
+    width: 32px;
+    height: 32px;
+}
+
+/* Main Content */
+.shop-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.product-image-container {
+    background-color: #f9f9f9;
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-image-container img {
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    /* Helps integrate white background images */
+}
+
+.product-overlay-logo {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1c1c;
+    opacity: 0.8;
+    pointer-events: none;
+    /* Only show if we want to fake branding on generic images */
+    display: none;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.product-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin: 0;
+    color: #1c1c1c;
+}
+
+.product-info p {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #333;
+    margin: 0;
+    max-width: 90%;
+    font-weight: 300;
+}
+
+.product-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    color: #555;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.product-stock,
+.product-condition {
+    background-color: #f0f0f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.add-to-cart-btn {
+    background: transparent;
+    border: 1px solid #1c1c1c;
+    padding: 16px 32px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+    font-family: 'Inter', sans-serif;
+}
+
+.add-to-cart-btn:hover {
+    background: #1c1c1c;
+    color: white;
+}
+
+/* Chat Button */
+.chat-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #1c1c1c;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s;
+    z-index: 100;
+}
+
+.chat-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .shop-header {
+        padding: 20px;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+
+    .shop-logo {
+        font-size: 24px;
+    }
+
+    .nav-btn.user-btn {
+        display: none;
+        /* Hide login text on mobile if needed, or keep icon */
+    }
+}

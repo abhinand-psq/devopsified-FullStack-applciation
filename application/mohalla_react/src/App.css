@@ -1,0 +1,127 @@
+:root {
+  --bp-xs-max: 575.98px;
+  --bp-sm-min: 576px;
+  --bp-md-min: 768px;
+  --bp-lg-min: 992px;
+  --bp-xl-min: 1200px;
+  --bp-xxl-min: 1400px;
+}
+
+.app {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.main-container {
+  padding-top: 64px;
+  /* Navbar height */
+  display: flex;
+  justify-content: center;
+  position: relative;
+  /* For overlay if needed */
+}
+
+/* Sidebar Wrapper - acts as a passthrough on desktop */
+.sidebar-wrapper {
+  display: contents;
+}
+
+/* Sidebar Overlay (Mobile) */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.content-area {
+  margin-left: 280px;
+  /* Sidebar width */
+  display: flex;
+  padding: 24px;
+  width: 100%;
+  max-width: 1400px;
+  /* Increased max width */
+  justify-content: center;
+  gap: 24px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Large layouts */
+@media (min-width: 769px) {
+
+  /* Ensure sidebar is visible */
+  .sidebar {
+    transform: translateX(0) !important;
+  }
+}
+
+/* Tablet / Medium Devices (max-width: 1024px in original code was roughly 'lg' boundary) */
+@media (max-width: 991.98px) {
+  .right-sidebar {
+    display: none;
+  }
+
+  .content-area {
+    /* Center functionality when right sidebar is gone */
+    justify-content: center;
+    /* Maintain margin-left if left sidebar is still visible (it is until 768) */
+  }
+}
+
+/* Mobile / Small Devices (max-width: 768px) */
+/* This aligns with the transition from Medium to Small/Extra Small */
+@media (max-width: 768px) {
+
+  /* Hide sidebar off-canvas */
+  .sidebar-wrapper .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: none;
+  }
+
+  /* When open, slide in */
+  .sidebar-wrapper.open .sidebar {
+    transform: translateX(0);
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Reset content area margin */
+  .content-area {
+    margin-left: 0;
+    padding: 16px;
+    width: 100%;
+  }
+
+  /* Ensure content doesn't overflow horizontally */
+  .app {
+    overflow-x: hidden;
+  }
+
+  .main-container {
+    padding-bottom: 70px;
+    /* Space for BottomNav */
+  }
+}
+
+/* Smallest devices adjustments */
+@media (max-width: 575.98px) {
+  .content-area {
+    padding: 12px;
+  }
+}

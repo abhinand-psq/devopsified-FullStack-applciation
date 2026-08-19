@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+     parameters {
+        choice(
+            name: 'action',
+            choices: ['plan', 'apply'],
+            description: 'Terraform action'
+        )
+    }
+
+
+    stages {
+
+        stage('Check Terraform Version') {
+            steps {
+                sh 'terraform version'
+            }
+        }
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/abhinand-psq/devopsified-FullStack-applciation.git'
+            }
+        }
+
+        stage('Terraform Init & Validate') {
+            steps {
+                dir('Jenkins-Server-TF') {
+                    sh 'terraform init'
+                    sh 'terraform validate'
+                }
+            }
+        }
+
+        stage('Terraform Plan / Apply') {
+            steps {
+                dir('Jenkins-Server-TF') {
+                    withAWS(
+                        credentials: 'aws-creds',
+                        region: 'ap-south-1'
+                    ) {
+                        script {
+                            if (params.action == 'plan') {
+                                sh 'terraform plan -var-file=variables.tfvars'
+                            } else if (params.action == 'apply') {
+                                sh 'terraform apply -auto-approve  -var-file=variables.tfvars'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

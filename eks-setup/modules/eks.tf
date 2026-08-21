@@ -24,13 +24,6 @@ resource "aws_eks_cluster" "eks" {
   }
 }
 
-# OIDC Provider
-resource "aws_iam_openid_connect_provider" "eks-oidc" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks-certificate.certificates[0].sha1_fingerprint]
-  url             = data.tls_certificate.eks-certificate.url
-}
-
 
 # AddOns for EKS Cluster
 resource "aws_eks_addon" "eks-addons" {
@@ -105,7 +98,7 @@ resource "aws_eks_node_group" "spot-node" {
   }
   tags_all = {
     "kubernetes.io/cluster/${var.cluster-name}" = "owned"
-    "Name" = "${var.cluster-name}-ondemand-nodes"
+    "Name" = "${var.cluster-name}-spot-nodes"
   }
   labels = {
     type      = "spot"

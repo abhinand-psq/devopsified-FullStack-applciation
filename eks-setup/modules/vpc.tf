@@ -59,8 +59,7 @@ resource "aws_subnet" "private-subnet" {
     "kubernetes.io/role/internal-elb"             = "1"
   }
 
-  depends_on = [aws_vpc.vpc,
-  ]
+  depends_on = [aws_vpc.vpc]
 }
 
 
@@ -150,8 +149,8 @@ resource "aws_security_group" "eks-cluster-sg" {
   vpc_id = aws_vpc.vpc.id
 
   ingress {
-    from_port   = 443
-    to_port     = 443
+    from_port   = 80
+    to_port     = 9000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] // It should be specific IP range
   }

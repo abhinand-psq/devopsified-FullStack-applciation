@@ -17,7 +17,7 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_subnet" "public-subnet" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = "10.0.1.0/24"
-  availability_zone       = "us-east-1a"
+  availability_zone       = "ap-south-1a"
   map_public_ip_on_launch = true
 
   tags = {
@@ -47,7 +47,7 @@ resource "aws_security_group" "security-group" {
   description = "Allowing Jenkins, Sonarqube, SSH Access"
 
   ingress = [
-    for port in [22, 8080, 9000, 9090, 80] : {
+    for port in [22, 8080, 9000, 9090, 80,3000] : {
       description      = "TLS from VPC"
       from_port        = port
       to_port          = port

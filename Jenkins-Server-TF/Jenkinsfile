@@ -29,7 +29,7 @@ pipeline {
     steps {
         dir('Jenkins-Server-TF') {
             withAWS(
-                credentials: 'aws-creds',
+                credentials: 'aws-cred',
                 region: 'ap-south-1'
             ) {
                 sh 'terraform init'
@@ -43,7 +43,7 @@ pipeline {
             steps {
                 dir('Jenkins-Server-TF') {
                     withAWS(
-                        credentials: 'aws-creds',
+                        credentials: 'aws-cred',
                         region: 'ap-south-1'
                     ) {
                         script {

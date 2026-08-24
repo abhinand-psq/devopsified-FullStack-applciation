@@ -3,11 +3,11 @@ pipeline {
     agent any
 
     parameters {
-        choice(
-            name: 'ACTION',
-            choices: ['plan', 'apply'],
-            description: 'Choose Terraform action'
-        )
+       choice(
+        name: 'ACTION',
+        choices: ['plan', 'apply', 'destroy'],
+        description: 'Choose Terraform action'
+    )
     }
 
     stages {
@@ -41,7 +41,12 @@ pipeline {
         stage('Terraform Validate') {
             steps {
                 dir('eks-setup/eks-build') {
-                    sh 'terraform validate'
+                    withAWS(
+                        credentials: 'aws-creds',
+                        region: 'ap-south-1'
+                    ) {
+                        sh 'terraform validate'
+                    }           
                 }
             }
         }
@@ -59,7 +64,9 @@ pipeline {
                             }
                             else if (params.ACTION == 'apply') {
                                 sh 'terraform apply -auto-approve -var-file=dev.tfvars'
-                            }
+                            }else if (params.ACTION == 'destroy') {
+        sh 'terraform destroy -auto-approve -var-file=variables.tfvars'
+    }
                         }
                     }
                 }

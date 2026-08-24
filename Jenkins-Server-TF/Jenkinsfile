@@ -3,10 +3,10 @@ pipeline {
 
      parameters {
         choice(
-            name: 'action',
-            choices: ['plan', 'apply'],
-            description: 'Terraform action'
-        )
+        name: 'ACTION',
+        choices: ['plan', 'apply', 'destroy'],
+        description: 'Choose Terraform action'
+    )
     }
 
 
@@ -52,6 +52,9 @@ pipeline {
                             } else if (params.action == 'apply') {
                                 sh 'terraform apply -auto-approve  -var-file=variables.tfvars'
                             }
+                            else if (params.ACTION == 'destroy') {
+        sh 'terraform destroy -auto-approve -var-file=variables.tfvars'
+    }
                         }
                     }
                 }

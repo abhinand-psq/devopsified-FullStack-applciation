@@ -1,0 +1,69 @@
+```groovy
+pipeline {
+    agent any
+
+    parameters {
+        choice(
+            name: 'ACTION',
+            choices: ['plan', 'apply'],
+            description: 'Choose Terraform action'
+        )
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/abhinand-psq/devopsified-FullStack-applciation.git'
+            }
+        }
+
+        stage('Terraform Version') {
+            steps {
+                sh 'terraform version'
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                dir('eks-setup/eks-build') {
+                    withAWS(
+                        credentials: 'aws-creds',
+                        region: 'ap-south-1'
+                    ) {
+                        sh 'terraform init'
+                    }
+                }
+            }
+        }
+
+        stage('Terraform Validate') {
+            steps {
+                dir('eks-setup/eks-build') {
+                    sh 'terraform validate'
+                }
+            }
+        }
+
+        stage('Terraform Plan / Apply') {
+            steps {
+                dir('eks-setup/eks-build') {
+                    withAWS(
+                        credentials: 'aws-creds',
+                        region: 'ap-south-1'
+                    ) {
+                        script {
+                            if (params.ACTION == 'plan') {
+                                sh 'terraform plan -var-file=dev.tfvars'
+                            }
+                            else if (params.ACTION == 'apply') {
+                                sh 'terraform apply -auto-approve -var-file=dev.tfvars'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

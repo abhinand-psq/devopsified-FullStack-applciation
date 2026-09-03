@@ -15,6 +15,7 @@ pipeline {
         stage('Check Terraform Version') {
             steps {
                 sh 'terraform version'
+                echo "Selected action: ${params.action}"
             }
         }
 
@@ -47,9 +48,9 @@ pipeline {
                         region: 'ap-south-1'
                     ) {
                         script {
-                            if (params.action == 'plan') {
+                            if (params.ACTION == 'plan') {
                                 sh 'terraform plan -var-file=variables.tfvars'
-                            } else if (params.action == 'apply') {
+                            } else if (params.ACTION == 'apply') {
                                 sh 'terraform apply -auto-approve  -var-file=variables.tfvars'
                             }
                             else if (params.ACTION == 'destroy') {

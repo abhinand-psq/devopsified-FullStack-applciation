@@ -67,11 +67,18 @@ sudo apt update
 sudo apt install terraform -y
 
 # Installing Trivy
-sudo apt-get install wget apt-transport-https gnupg lsb-release -y
-wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
-sudo apt update
-sudo apt install trivy -y
+sudo apt-get install -y wget gnupg
+
+wget -qO - https://get.trivy.dev/deb/public.key | \
+gpg --dearmor | \
+sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+
+echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://get.trivy.dev/deb generic main" | \
+sudo tee /etc/apt/sources.list.d/trivy.list
+
+sudo apt-get update
+
+sudo apt-get install -y trivy
 
 
 # Intalling Helm

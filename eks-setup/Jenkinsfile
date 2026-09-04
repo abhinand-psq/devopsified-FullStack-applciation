@@ -64,7 +64,7 @@ pipeline {
                             else if (params.ACTION == 'apply') {
                                 sh 'terraform apply -auto-approve -var-file=dev.tfvars'
                             }else if (params.ACTION == 'destroy') {
-        sh 'terraform destroy -auto-approve -var-file=variables.tfvars'
+        sh 'terraform destroy -auto-approve -var-file=dev.tfvars'
     }
                         }
                     }

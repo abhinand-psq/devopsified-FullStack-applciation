@@ -46,7 +46,7 @@ addons = [
   },  # Add more addons as needed
 ]
 
-addons = [
+/*addons = [
   {
     name    = "vpc-cni",
     version = "v1.22.4-eksbuild.3"
@@ -64,4 +64,4 @@ addons = [
     version = "v1.64.0-eksbuild.1"
   }
   # Add more addons as needed
-]
+]*/

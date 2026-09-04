@@ -68,11 +68,11 @@ resource "aws_iam_role_policy_attachment" "eks-AmazonEC2ContainerRegistryReadOnl
   role       = aws_iam_role.eks-nodegroup-role[count.index].name
 }*/
 
-resource "aws_iam_role_policy_attachment" "ebs_csi_node_policy" {
+/*resource "aws_iam_role_policy_attachment" "ebs_csi_node_policy" {
   count      = var.is_eks_nodegroup_role_enabled ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/AmazonEBSCSIDriverPolicyV2"
   role       = aws_iam_role.eks-nodegroup-role[count.index].name
-}
+}*/
 
 
 

@@ -43,6 +43,21 @@ addons = [
   {
     name    = "kube-proxy"
     version = "v1.35.3-eksbuild.18"
+  },  # Add more addons as needed
+]
+
+addons = [
+  {
+    name    = "vpc-cni",
+    version = "v1.22.4-eksbuild.3"
+  },
+  {
+    name    = "coredns"
+    version = "v1.13.2-eksbuild.11"
+  },
+  {
+    name    = "kube-proxy"
+    version = "v1.35.3-eksbuild.18"
   },
   {
     name    = "aws-ebs-csi-driver"

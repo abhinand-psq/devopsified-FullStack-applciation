@@ -1,0 +1,202 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'Nodejs'
+    }
+
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+
+        AWS_ACCOUNT_ID = credentials('ACCOUNT_ID')
+        AWS_ECR_REPO_NAME = credentials('mohalla-frontend')
+
+        AWS_DEFAULT_REGION = 'ap-south-1'
+    }
+
+    stages {
+
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/abhinand-psq/mohallahub_backend_pipeline.git'
+            }
+        }
+        
+
+
+        stage('SonarQube Analysis') {
+            steps {
+                dir('application-code/Frontend') {
+
+                    withSonarQubeEnv('sonar-server') {
+
+                        sh '''
+                            $SCANNER_HOME/bin/sonar-scanner \
+                              -Dsonar.projectName=frontend-mohalla \
+                              -Dsonar.projectKey=frontend-mohalla \
+                              -Dsonar.sources=.
+                        '''
+                    }
+                }
+            }
+        }
+
+
+        stage('Quality Gate') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+                }
+            }
+        }
+
+
+        stage('OWASP Dependency-Check') {
+            steps {
+                dir('application-code/Frontend') {
+
+                    dependencyCheck(
+                        odcInstallation: 'DP-Check',
+                        nvdCredentialsId: 'nvd-api-key',
+                        additionalArguments: '--scan . --disableYarnAudit --disableNodeAudit'
+                    )
+
+                    dependencyCheckPublisher(
+                        pattern: '**/dependency-check-report.xml'
+                    )
+                }
+            }
+        }
+
+
+        stage('Trivy Filesystem Scan') {
+            steps {
+                dir('application-code/Frontend') {
+
+                    sh '''
+                        trivy fs . > trivyfs.txt
+                    '''
+                }
+            }
+        }
+
+
+        stage('Docker Image Build') {
+            steps {
+                dir('application-code/Frontend') {
+
+                    sh '''
+                        docker system prune -f
+                        docker container prune -f
+
+                        docker build \
+                  --build-arg VITE_ENV=production \
+                  --build-arg VITE_BACKEND_API_URL=http://abhi.app.local/api/v1 \
+                  -t ${AWS_ECR_REPO_NAME}:latest \
+                  .
+                    '''
+                }
+            }
+        }
+
+
+        stage('Login to Amazon ECR') {
+            steps {
+
+                withAWS(
+                    credentials: 'aws-creds',
+                    region: 'ap-south-1'
+                ) {
+
+                    sh '''
+                        aws ecr get-login-password \
+                          --region ${AWS_DEFAULT_REGION} | \
+                        docker login \
+                          --username AWS \
+                          --password-stdin \
+                          ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+                    '''
+                }
+            }
+        }
+
+
+        stage('Tag and Push Image to ECR') {
+            steps {
+
+                withAWS(
+                    credentials: 'aws-creds',
+                    region: 'ap-south-1'
+                ) {
+
+                    sh '''
+                        IMAGE_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}
+
+                        docker tag \
+                          ${AWS_ECR_REPO_NAME}:latest \
+                          ${IMAGE_URI}
+
+                        docker push ${IMAGE_URI}
+                    '''
+                }
+            }
+        }
+
+
+        stage('Trivy Image Scan') {
+            steps {
+
+                sh '''
+                    IMAGE_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}
+
+                    trivy image ${IMAGE_URI} > trivyimage.txt
+                '''
+            }
+        }
+
+
+        stage('Update Kubernetes Deployment') {
+
+            steps {
+
+                dir('kubernetes-manifest/frontend') {
+
+                    withCredentials([
+                        string(
+                            credentialsId: 'github',
+                            variable: 'GITHUB_TOKEN'
+                        )
+                    ]) {
+
+                        sh '''
+                            IMAGE_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}
+
+                            sed -i -E \
+                              "s|^[[:space:]]*image: .*|          image: ${IMAGE_URI}|" \
+                              frontend-deployment.yaml
+
+                            git config user.email "abhinandpsq2@gmail.com"
+                            git config user.name "abhinand-psq"
+
+                            git add frontend-deployment.yaml
+
+                            git commit -m "Update frontend image to build ${BUILD_NUMBER}" || echo "No changes to commit"
+
+                            git push \
+                              https://x-access-token:${GITHUB_TOKEN}@github.com/abhinand-psq/mohallahub_backend_pipeline.git \
+                              HEAD:main
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}

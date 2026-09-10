@@ -1,0 +1,534 @@
+# 🚀 Amazon EKS Infrastructure Provisioning with Terraform
+
+## 📖 Overview
+
+This repository contains the Terraform configuration used to provision a production-style Amazon Elastic Kubernetes Service (EKS) cluster on AWS.
+
+The infrastructure was built entirely using Infrastructure as Code (IaC) principles and serves as the Kubernetes platform for deploying and operating a full-stack MERN application using GitOps, CI/CD, and observability tools.
+
+The deployment includes networking, IAM, EKS control plane, managed node groups, cluster add-ons, and remote Terraform state management.
+
+---
+
+## 🎯 Project Objectives
+
+- Provision AWS infrastructure using Terraform
+- Build a highly available EKS cluster across multiple Availability Zones
+- Implement Infrastructure as Code (IaC) best practices
+- Use remote Terraform state storage
+- Configure managed worker nodes
+- Enable Kubernetes workload deployment
+- Prepare infrastructure for GitOps with ArgoCD
+- Prepare infrastructure for monitoring using Prometheus and Grafana
+
+---
+
+# 🏗 Architecture
+
+```text
+                                Internet
+                                    │
+                                    ▼
+                         ┌──────────────────┐
+                         │ Internet Gateway │
+                         └──────────────────┘
+                                    │
+                                    ▼
+                  ┌──────────────────────────────────┐
+                  │            AWS VPC              │
+                  │         10.16.0.0/16           │
+                  └──────────────────────────────────┘
+                         │                     │
+                         ▼                     ▼
+
+              ┌────────────────┐     ┌────────────────┐
+              │ Public Subnets │     │ Private Subnets│
+              └────────────────┘     └────────────────┘
+                       │                      │
+                       ▼                      ▼
+
+                ┌────────────┐       ┌───────────────┐
+                │ NAT Gateway│──────▶│ EKS Cluster   │
+                └────────────┘       └───────────────┘
+                                            │
+                         ┌──────────────────┴──────────────────┐
+                         ▼                                     ▼
+
+               On-Demand Node Group                 Spot Node Group
+               (c7i-flex.large)                     (t3.small)
+
+                         │
+                         ▼
+
+                  Kubernetes Workloads
+                         │
+                         ▼
+
+             ArgoCD • Prometheus • Grafana
+```
+
+---
+
+# ☁️ Infrastructure Components
+
+## Networking
+
+| Resource | Description |
+|-----------|------------|
+| VPC | Custom VPC |
+| Internet Gateway | Public internet access |
+| NAT Gateway | Outbound internet for private subnets |
+| Public Route Tables | Routing for public subnets |
+| Private Route Tables | Routing for private subnets |
+| Public Subnets | Internet-facing resources |
+| Private Subnets | Kubernetes worker nodes |
+
+---
+
+## VPC Configuration
+
+### VPC CIDR
+
+```text
+10.16.0.0/16
+```
+
+### Public Subnets
+
+```text
+10.16.0.0/20
+10.16.16.0/20
+10.16.32.0/20
+```
+
+### Private Subnets
+
+```text
+10.16.128.0/20
+10.16.144.0/20
+10.16.160.0/20
+```
+
+### Availability Zones
+
+```text
+ap-south-1a
+ap-south-1b
+ap-south-1c
+```
+
+---
+
+# ☸️ EKS Cluster Configuration
+
+## Cluster Information
+
+| Property | Value |
+|-----------|---------|
+| Cluster Name | dev-ap-medium-eks-cluster |
+| Provider | Amazon EKS |
+| Kubernetes Version | 1.35 |
+| Platform Version | eks.21 |
+| Region | ap-south-1 |
+| Endpoint Access | Private Only |
+
+---
+
+## Security Configuration
+
+The Kubernetes API Server is configured as:
+
+```hcl
+endpoint_private_access = true
+endpoint_public_access  = false
+```
+
+### Benefits
+
+- No public Kubernetes API exposure
+- Improved cluster security
+- Reduced attack surface
+- Production-oriented design
+
+---
+
+# 👷 Managed Node Groups
+
+Two separate node groups were created.
+
+---
+
+## On-Demand Node Group
+
+### Configuration
+
+```hcl
+instance_types = ["c7i-flex.large"]
+capacity_type  = "ON_DEMAND"
+```
+
+### Scaling
+
+```hcl
+desired_size = 1
+min_size     = 1
+max_size     = 4
+```
+
+### Purpose
+
+- Critical workloads
+- Stable applications
+- Production services
+
+---
+
+## Spot Node Group
+
+### Configuration
+
+```hcl
+instance_types = ["t3.small"]
+capacity_type  = "SPOT"
+```
+
+### Scaling
+
+```hcl
+desired_size = 1
+min_size     = 1
+max_size     = 10
+```
+
+### Labels
+
+```hcl
+type       = "spot"
+lifecycle  = "spot"
+```
+
+### Purpose
+
+- Cost optimization
+- Non-critical workloads
+- Batch jobs
+- Temporary workloads
+
+---
+
+# 🔐 IAM Configuration
+
+## EKS Cluster Role
+
+Attached Policies:
+
+```text
+AmazonEKSClusterPolicy
+```
+
+---
+
+## Worker Node Role
+
+Attached Policies:
+
+```text
+AmazonEKSWorkerNodePolicy
+AmazonEKS_CNI_Policy
+AmazonEC2ContainerRegistryReadOnly
+```
+
+These permissions allow worker nodes to:
+
+- Join the cluster
+- Manage pod networking
+- Pull images from Amazon ECR
+
+---
+
+# 🔧 EKS Add-ons
+
+The following managed add-ons were installed automatically:
+
+| Add-on | Purpose |
+|----------|----------|
+| VPC CNI | Pod networking |
+| CoreDNS | Cluster DNS |
+| Kube Proxy | Network proxy |
+
+---
+
+# 🗂 Terraform Backend
+
+Remote state storage is configured using Amazon S3.
+
+## Benefits
+
+- Centralized state management
+- Team collaboration
+- State persistence
+- Improved reliability
+
+### Backend
+
+```hcl
+backend "s3" {
+    bucket = "<terraform-state-bucket>"
+}
+```
+
+---
+
+# 📁 Terraform Project Structure
+
+```text
+terraform/
+│
+├── backend.tf
+├── provider.tf
+├── variables.tf
+├── outputs.tf
+├── versions.tf
+├── dev.tfvars
+│
+├── modules/
+│   ├── network/
+│   ├── eks/
+│   └── security/
+│
+└── Jenkinsfile
+```
+
+---
+
+# 🚀 Deployment Workflow
+
+## Initialize Terraform
+
+```bash
+terraform init
+```
+
+Downloads required providers and initializes backend configuration.
+
+---
+
+## Validate Configuration
+
+```bash
+terraform validate
+```
+
+Checks Terraform syntax and configuration integrity.
+
+---
+
+## Generate Execution Plan
+
+```bash
+terraform plan -var-file=dev.tfvars
+```
+
+Preview resources before deployment.
+
+---
+
+## Apply Infrastructure
+
+```bash
+terraform apply -var-file=dev.tfvars
+```
+
+Creates all AWS resources.
+
+---
+
+## Destroy Infrastructure
+
+```bash
+terraform destroy -var-file=dev.tfvars
+```
+
+Removes all provisioned resources.
+
+---
+
+# 🔗 Connect to EKS Cluster
+
+Update local kubeconfig:
+
+```bash
+aws eks update-kubeconfig \
+--region ap-south-1 \
+--name dev-ap-medium-eks-cluster
+```
+
+---
+
+## Verify Cluster Access
+
+```bash
+kubectl get nodes
+```
+
+Example Output:
+
+```text
+ip-10-16-140-187.ap-south-1.compute.internal   Ready
+ip-10-16-172-71.ap-south-1.compute.internal    Ready
+```
+
+---
+
+# ✅ Validation & Verification
+
+## Cluster Validation
+
+Verified:
+
+- EKS Cluster Active
+- Kubernetes API reachable
+- Control Plane healthy
+- No cluster health issues
+
+---
+
+## Node Validation
+
+Verified:
+
+- Worker nodes joined cluster
+- Nodes in Ready state
+- Managed Node Groups operational
+
+---
+
+## Networking Validation
+
+Verified:
+
+- VPC connectivity
+- NAT Gateway functionality
+- Pod networking operational
+- Internal communication successful
+
+---
+
+## Load Balancer Validation
+
+Kubernetes services successfully integrated with AWS Load Balancer Controller.
+
+Verified:
+
+- Target Groups created automatically
+- Targets registered successfully
+- Health checks passing
+- Traffic routing functional
+
+---
+
+# 📸 Deployment Evidence
+
+## EKS Cluster Overview
+
+Demonstrates:
+
+- Cluster Active
+- Kubernetes Version 1.35
+- Cluster Health Status
+- OIDC Integration
+
+### Screenshot
+
+```text
+docs/images/eks-cluster-overview.png
+```
+
+---
+
+## Worker Nodes
+
+Demonstrates:
+
+- Node registration
+- Ready status
+- Cluster connectivity
+
+### Screenshot
+
+```text
+docs/images/kubectl-get-nodes.png
+```
+
+---
+
+## AWS Target Group Health
+
+Demonstrates:
+
+- Successful service exposure
+- Healthy Kubernetes targets
+- Load balancer integration
+
+### Screenshot
+
+```text
+docs/images/target-group-health.png
+```
+
+---
+
+## EC2 Worker Nodes
+
+Demonstrates:
+
+- Managed Node Groups
+- Worker node provisioning
+- Instance health
+
+### Screenshot
+
+```text
+docs/images/worker-nodes.png
+```
+
+---
+
+# 🎓 Key Learnings
+
+During this project I gained hands-on experience with:
+
+- Infrastructure as Code (Terraform)
+- Amazon EKS
+- VPC Networking
+- NAT Gateway Architecture
+- Multi-AZ Deployments
+- Kubernetes Administration
+- IAM Roles and Policies
+- Managed Node Groups
+- Spot Instance Optimization
+- Terraform Remote State
+- AWS Load Balancer Controller
+- GitOps Infrastructure Preparation
+- Production-style Cloud Architecture
+
+---
+
+# 💼 Resume Highlights
+
+- Provisioned a production-grade Amazon EKS cluster using Terraform across multiple Availability Zones.
+- Designed and implemented custom VPC networking with public/private subnets, NAT Gateway, route tables, and security groups.
+- Configured managed node groups using both On-Demand and Spot instances to optimize reliability and infrastructure costs.
+- Implemented remote Terraform state management using Amazon S3.
+- Integrated Kubernetes workloads with AWS Load Balancer Controller and verified end-to-end traffic routing.
+- Prepared the Kubernetes platform for GitOps deployment using ArgoCD and observability using Prometheus and Grafana.
+
+---
+
+# 👨‍💻 Author
+
+**Abhinand P**
+
+DevOps | Cloud | Kubernetes | Terraform | AWS
+
+Built as part of a production-style DevOps project implementing CI/CD, GitOps, Infrastructure as Code, Monitoring, and Kubernetes operations.

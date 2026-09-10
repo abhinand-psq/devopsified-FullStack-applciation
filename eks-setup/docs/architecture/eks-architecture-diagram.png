@@ -1,0 +1,22 @@
+Internet
+   │
+   ▼
+Internet Gateway
+   │
+   ▼
+Public Subnets
+   │
+   ▼
+NAT Gateway
+   │
+   ▼
+Private Subnets
+   │
+   ▼
+EKS Cluster
+   │
+   ├── On-Demand Node Group
+   │      └── c7i-flex.large
+   │
+   └── Spot Node Group
+          └── t3.small

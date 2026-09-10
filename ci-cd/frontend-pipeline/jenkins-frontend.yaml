@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     waitForQualityGate \
-                        abortPipeline: false, \
+                        abortPipeline: true, \
                         credentialsId: 'sonar-token'
                 }
             }

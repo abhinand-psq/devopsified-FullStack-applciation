@@ -169,7 +169,7 @@ pipeline {
 
             steps {
 
-                dir('kubernetes-manifest/backend') {
+               
 
                     withCredentials([
                         string(
@@ -207,6 +207,6 @@ pipeline {
                     }
                 }
             }
-        }
+        
     }
 }

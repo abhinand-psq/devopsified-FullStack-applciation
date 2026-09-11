@@ -1,0 +1,69 @@
+                                      GitHub
+                                         |
+            +----------------------------+----------------------------+
+            |                                                         |
+            |                                                         |
+            v                                                         v
+   Infrastructure Repository                                Application Repositories
+   (Terraform Code)                                    (Frontend & Backend Source Code)
+            |                                                         |
+            +----------------------------+----------------------------+
+                                         |
+                                         v
+                            +--------------------------+
+                            |      Jenkins Server      |
+                            |      EC2 Instance        |
+                            |--------------------------| |
+                            +------------+------------+
+                                         |
+          +------------------------------+------------------------------+
+          |                                                             |
+          |                                                             |
+          v                                                             v
+
+  Infrastructure Pipeline                                   Application CI/CD Pipelines
+          |                                                             |
+          |                                                             |
+          v                                                             v
+
+   Terraform Init                                            Source Code Checkout
+          |                                                             |
+          v                                                             v
+
+   Terraform Validate                                       Dependency Installation
+          |                                                             |
+          v                                                             v
+
+   Terraform Plan                                         SonarQube Analysis
+          |                                                             |
+          v                                                             v
+
+   Terraform Apply                                        Quality Gate Validation
+          |                                                             |
+          v                                                             v
+
++----------------------------+                          OWASP Dependency Check
+|      AWS Infrastructure    |                                    |
++----------------------------+                                    v
+| VPC                        |                          Trivy Filesystem Scan
+| Public Subnets             |                                    |
+| Private Subnets            |                                    v
+| Internet Gateway           |                             Docker Build
+| NAT Gateway                |                                    |
+| Route Tables               |                                    v
++-------------+--------------+                            Trivy Image Scan
+              |                                               |
+              v                                               v
+
+      Amazon EKS Cluster                                  Amazon ECR
+              |                                               |
+              |                                               |
+              |                                      Push Docker Image
+              |                                               |
+                                                              v
+                                               Update Kubernetes Manifest
+                                                              |
+                                                              v
+                                            GitOps Manifest Repository
+                  
+                                          

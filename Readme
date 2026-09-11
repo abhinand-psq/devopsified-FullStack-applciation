@@ -53,3 +53,6 @@ argocd/
     └── README.md
 ```
 
+
+nat gateway
+manuall installatioj like helm ,oidc

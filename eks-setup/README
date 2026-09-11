@@ -489,39 +489,296 @@ Demonstrates:
 ### Screenshot
 
 ```text
-docs/images/worker-nodes.png
+(docs/images/worker-nodes.png)
 ```
 
 ---
 
-# 🎓 Key Learnings
+# Post-Deployment Cluster Configuration
+
+## Overview
+
+After the Amazon EKS cluster was provisioned using Terraform, several Kubernetes and AWS integrations were manually configured to enable load balancing, GitOps deployments, monitoring, and application access.
+
+These configurations extend the base EKS cluster and provide the operational capabilities required by the platform.
+
+---
+
+# Configuration Architecture
+
+```text
+Terraform
+    |
+    ▼
+Amazon EKS Cluster
+    |
+    +-----------------------------+
+    |                             |
+    ▼                             ▼
+
+AWS Load Balancer          ArgoCD
+Controller                 GitOps Platform
+    |                             |
+    ▼                             ▼
+
+Application Ingress     Continuous Delivery
+    |
+    ▼
+
+Internet Access
+
+    +-----------------------------+
+    |
+    ▼
+
+Prometheus & Grafana
+Monitoring Stack
+```
+
+---
+
+# IAM OIDC Provider Configuration
+
+An IAM OpenID Connect (OIDC) provider was associated with the EKS cluster.
+
+This enables Kubernetes service accounts to assume AWS IAM roles using IAM Roles for Service Accounts (IRSA).
+
+### Purpose
+
+* Secure AWS API access from Kubernetes workloads
+* Avoid long-lived AWS credentials
+* Required for AWS Load Balancer Controller
+
+
+### Verification
+
+```bash
+aws iam list-open-id-connect-providers
+```
+
+---
+
+# AWS Load Balancer Controller
+
+The AWS Load Balancer Controller was installed to allow Kubernetes Ingress resources to provision AWS Application Load Balancers (ALBs).
+
+## Components Configured
+
+### IAM Policy
+
+```text
+AWSLoadBalancerControllerIAMPolicy
+```
+
+### IAM Service Account
+
+```text
+aws-load-balancer-controller
+```
+
+### Helm Deployment
+
+```text
+Namespace: kube-system
+Chart: aws-load-balancer-controller
+```
+
+### Purpose
+
+* Provision Application Load Balancers
+* Manage Target Groups
+* Configure Listener Rules
+* Route external traffic into Kubernetes workloads
+
+---
+
+## Controller Validation
+
+Controller pods were verified after installation.
+
+```bash
+kubectl get pods -n kube-system
+```
+
+Logs were inspected to identify startup issues and validate controller operation.
+
+---
+
+## VPC Discovery Issue Resolution
+
+During installation, the controller was unable to automatically discover the VPC through Instance Metadata Service (IMDS).
+
+The deployment was updated to explicitly provide:
+
+* AWS Region
+* VPC ID
+
+using Helm values.
+
+This resolved controller startup failures and enabled successful ALB provisioning.
+
+---
+
+# Public Subnet Validation
+
+Internet-facing Application Load Balancers require public subnets to be tagged correctly.
+
+The EKS VPC subnets were verified to contain:
+
+```text
+kubernetes.io/role/elb = 1
+```
+
+### Purpose
+
+Allows AWS Load Balancer Controller to automatically discover eligible public subnets for ALB creation.
+
+---
+
+# ArgoCD Installation
+
+ArgoCD was installed into a dedicated namespace.
+
+```text
+Namespace: argocd
+```
+
+## Purpose
+
+* GitOps deployment management
+* Continuous synchronization
+* Declarative Kubernetes deployments
+
+### Access Method
+
+The ArgoCD Server service was exposed using:
+
+```text
+Service Type: LoadBalancer
+```
+
+AWS automatically provisioned an external load balancer for UI access.
+
+---
+
+# Private Amazon ECR Integration
+
+Container images are stored in private Amazon ECR repositories.
+
+Kubernetes image pull secrets were configured to allow workloads to authenticate and pull images from ECR.
+
+### Purpose
+
+* Secure image retrieval
+* Private container registry access
+
+---
+
+# Namespace Organization
+
+Application workloads were deployed into dedicated namespaces instead of the default namespace.
+
+### Benefits
+
+* Improved visibility
+* Logical workload separation
+* Easier resource management
+* Better monitoring organization
+
+---
+
+# Monitoring Stack Installation
+
+A monitoring platform was installed using the Prometheus Community kube-prometheus-stack Helm chart.
+
+```text
+Namespace: monitoring
+```
+
+## Components Installed
+
+* Prometheus
+* Grafana
+* Alertmanager
+* Prometheus Operator
+* kube-state-metrics
+* Node Exporter
+
+---
+
+## Grafana Access
+
+Grafana was exposed through a Kubernetes LoadBalancer service.
+
+```text
+Service Type: LoadBalancer
+```
+
+This provisioned an AWS Load Balancer and enabled external dashboard access.
+
+---
+
+## Storage Considerations
+
+Persistent volumes were not configured for Prometheus or Grafana.
+
+### Result
+
+* Metrics are retained only while pods remain available.
+* Suitable for learning and demonstration environments.
+* Production environments should use persistent storage.
+
+---
+
+# Post-Deployment Summary
+
+The following capabilities were added after cluster creation:
+
+| Component                    | Purpose                        |
+| ---------------------------- | ------------------------------ |
+| IAM OIDC Provider            | IAM Roles for Service Accounts |
+| AWS Load Balancer Controller | ALB Integration                |
+| Public Subnet Tag Validation | Internet-facing ALBs           |
+| ArgoCD                       | GitOps Deployment              |
+| ECR Image Pull Secrets       | Private Registry Access        |
+| Dedicated Namespaces         | Workload Isolation             |
+| Prometheus                   | Metrics Collection             |
+| Grafana                      | Visualization                  |
+| Alertmanager                 | Alert Management               |
+
+---
+
+**Terraform creates EKS → Manual cluster integrations make it usable for GitOps, ingress, monitoring, and deployments.**
+
+
+## 🎓 Key Learnings
 
 During this project I gained hands-on experience with:
 
 - Infrastructure as Code (Terraform)
-- Amazon EKS
-- VPC Networking
-- NAT Gateway Architecture
-- Multi-AZ Deployments
-- Kubernetes Administration
-- IAM Roles and Policies
-- Managed Node Groups
-- Spot Instance Optimization
-- Terraform Remote State
-- AWS Load Balancer Controller
-- GitOps Infrastructure Preparation
+- Amazon EKS & Kubernetes Administration
+- VPC Networking & Multi-AZ Architecture
+- IAM, OIDC & IRSA Integration
+- Managed Node Groups & Spot Instances
+- AWS Load Balancer Controller & Ingress
+- GitOps with ArgoCD
+- Amazon ECR Integration
+- Prometheus & Grafana Monitoring
+- Helm-based Kubernetes Deployments
 - Production-style Cloud Architecture
 
 ---
 
-# 💼 Resume Highlights
+## 💼 Resume Highlights
 
-- Provisioned a production-grade Amazon EKS cluster using Terraform across multiple Availability Zones.
-- Designed and implemented custom VPC networking with public/private subnets, NAT Gateway, route tables, and security groups.
-- Configured managed node groups using both On-Demand and Spot instances to optimize reliability and infrastructure costs.
-- Implemented remote Terraform state management using Amazon S3.
-- Integrated Kubernetes workloads with AWS Load Balancer Controller and verified end-to-end traffic routing.
-- Prepared the Kubernetes platform for GitOps deployment using ArgoCD and observability using Prometheus and Grafana.
+- Provisioned an Amazon EKS cluster using Terraform across multiple Availability Zones.
+- Designed VPC networking with public/private subnets, NAT Gateway, route tables, and security groups.
+- Configured managed node groups with On-Demand and Spot instances for cost optimization.
+- Integrated AWS Load Balancer Controller for Kubernetes Ingress and ALB provisioning.
+- Implemented GitOps deployment workflows using ArgoCD.
+- Integrated private Amazon ECR repositories with Kubernetes workloads.
+- Deployed Prometheus and Grafana for cluster monitoring and observability.
+- Built a production-style Kubernetes platform ready for CI/CD, GitOps, ingress, and monitoring workloads.
 
 ---
 

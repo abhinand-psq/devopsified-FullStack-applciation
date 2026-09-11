@@ -200,7 +200,48 @@ After all validation and security checks pass, Jenkins builds Docker images.
 ```bash
 docker build -t mohalla-frontend .
 ```
+### Frontend Environment Variable Management
 
+The frontend application is built using **Vite**, which requires environment variables to be available during the build process.
+
+Environment variables are injected into the Docker image during the CI pipeline using Docker build arguments and are embedded into the application when `npm run build` is executed.
+
+```dockerfile
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+```
+
+Because Vite uses build-time configuration, changes to frontend environment variables require a new application build and deployment.
+
+### Update Workflow
+
+```text
+Update Environment Variable
+            |
+            ▼
+    Jenkins CI Pipeline
+            |
+            ▼
+      npm run build
+            |
+            ▼
+    Build Docker Image
+            |
+            ▼
+       Push to ECR
+            |
+            ▼
+Update Deployment Manifest
+            |
+            ▼
+         ArgoCD Sync
+            |
+            ▼
+     Deploy to Amazon EKS
+```
+
+This approach ensures that frontend configuration changes are versioned, reproducible, and deployed through the same CI/CD and GitOps workflow as application code changes.
+```
 ### Backend
 
 ```bash

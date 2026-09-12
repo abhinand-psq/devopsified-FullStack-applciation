@@ -610,7 +610,7 @@ This confirms that the AWS Load Balancer Controller was integrating the Kubernet
 
 ### AWS Load Balancer Controller
 
-![AWS Load Balancer Controller](./docs/Images/aws-load-balancer-controller.png)
+![AWS Load Balancer Controller](./docs/Images/aws-lb-controller.png)
 
 ### Kubernetes Ingress
 

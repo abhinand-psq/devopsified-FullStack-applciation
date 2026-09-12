@@ -358,6 +358,30 @@ A complete monitoring stack was deployed using the Prometheus Community kube-pro
 
 ---
 
+## 7. Application Services
+
+The Mohalla platform consists of a React frontend and a Node.js backend,
+both containerized using Docker and deployed to Amazon EKS.
+
+### Frontend
+
+- React + Vite
+- Multi-stage Docker build
+- Nginx Runtime
+- Build-time environment configuration
+- Kubernetes deployment
+
+
+### Backend
+
+- Node.js API Service
+- Multi-stage Docker build
+- Production dependency installation
+- Non-root execution
+- Kubernetes deployment
+
+---
+
 # End-to-End Delivery Workflow
 
 ```text

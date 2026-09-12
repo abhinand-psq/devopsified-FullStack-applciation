@@ -748,6 +748,9 @@ The following capabilities were added after cluster creation:
 
 **Terraform creates EKS → Manual cluster integrations make it usable for GitOps, ingress, monitoring, and deployments.**
 
+Detailed documentation for these post-deployment activities is available below:
+- [Post-Deployment Configuration](./docs/post-deployment-configuration.md)
+
 
 ## 🎓 Key Learnings
 

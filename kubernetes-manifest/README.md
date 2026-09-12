@@ -610,15 +610,15 @@ This confirms that the AWS Load Balancer Controller was integrating the Kubernet
 
 ### AWS Load Balancer Controller
 
-![AWS Load Balancer Controller](./docs/images/aws-load-balancer-controller.png)
+![AWS Load Balancer Controller](./docs/Images/aws-load-balancer-controller.png)
 
 ### Kubernetes Ingress
 
-![Kubernetes Ingress](./docs/images/kubernetes-ingress.png)
+![Kubernetes Ingress](./docs/Images/kubernetes-ingress.png)
 
 ### AWS Application Load Balancer
 
-![AWS Application Load Balancer](./docs/images/aws-alb-created.png)
+![AWS Application Load Balancer](./docs/Images/aws-alb-created.png)
 
 ---
 
@@ -628,11 +628,11 @@ The final application was accessed through the automatically generated AWS ALB D
 
 ### Mohallahub Home Page
 
-![Mohallahub application home](./docs/images/application-home.png)
+![Mohallahub application home](./docs/Images/application-home.png)
 
 ### Mohallahub Signup Page
 
-![Mohallahub signup page](./docs/images/application-signup.png)
+![Mohallahub signup page](./docs/Images/application-signup.png)
 
 These screenshots demonstrate that the Kubernetes deployment was not only created successfully, but that the application was reachable externally through the AWS load-balancing layer.
 

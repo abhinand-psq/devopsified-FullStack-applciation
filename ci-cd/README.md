@@ -105,6 +105,13 @@ The pipeline performs automated source code analysis using SonarQube.
 
 ---
 
+### SonarQube Projects Overview
+
+Separate SonarQube projects are maintained for the frontend and backend services, enabling independent code quality analysis, reporting, and quality gate validation.
+
+![SonarQube Projects Overview](./docs/images/sonarqube-projects-overview.png)
+
+
 ## 3. Quality Gate Validation
 
 After code analysis Jenkins waits for the SonarQube Quality Gate result.
@@ -131,6 +138,18 @@ Deployment Blocked
 ```
 
 This guarantees that only validated code can move further through the pipeline.
+
+### Backend Quality Gate
+
+The backend application successfully passed all configured SonarQube Quality Gate requirements before continuing through the deployment workflow.
+
+![Backend Quality Gate](./docs/images/sonarqube-backend-quality-gate.png)
+
+### Frontend Quality Gate
+
+The frontend application successfully passed all configured SonarQube Quality Gate requirements before continuing through the deployment workflow.
+
+![Frontend Quality Gate](./docs/images/sonarqube-frontend-quality-gate.png)
 
 ---
 
@@ -253,6 +272,12 @@ docker build -t mohalla-backend .
 ## 7. Amazon ECR Integration
 
 Validated images are pushed to Amazon Elastic Container Registry (ECR).
+
+### Amazon ECR Repositories
+
+Separate Amazon ECR repositories are maintained for frontend and backend container images. Jenkins pushes versioned Docker images to these repositories after all quality and security validation stages have successfully completed.
+
+![Amazon ECR Repositories](./docs/images/amazon-ecr-repositories.png)
 
 ### Repositories
 
@@ -401,6 +426,16 @@ Once Jenkins updates the deployment manifests:
 5. The application becomes Healthy and Synced.
 
 No manual Kubernetes deployment commands are required.
+
+---
+
+# Deployment Verification
+
+The following output demonstrates successful execution of the CI/CD workflow, including image build, image publication, GitOps manifest updates, and deployment automation.
+
+![Pipeline Execution Output](./docs/images/terraform-output.png)
+
+---
 
 ---
 

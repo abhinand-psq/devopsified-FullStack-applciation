@@ -12,7 +12,7 @@ The server hosts Jenkins and supporting DevOps tooling required across the entir
 
 ## Architecture
 
-![Jenkins Architecture](../docs/architecture/architecture.png)
+![Jenkins Architecture](./docs/architecture/architecture.png)
 
 ### Core Responsibilities
 
@@ -58,7 +58,7 @@ The server hosts Jenkins and supporting DevOps tooling required across the entir
 
 ### EC2 Instance
 
-![EC2 Instance](screenshots/ec2-instance.png)
+![EC2 Instance](./docs/screenshots/ec2-instance.png)
 
 ---
 
@@ -109,7 +109,7 @@ Used for static code analysis and quality validation.
 - Security hotspot detection
 - Quality Gate validation
 
-![SonarQube Scanner](screenshots/sonar-scanner-tool.png)
+![SonarQube Scanner](./docs/screenshots/sonar-scanner-tool.png)
 
 ---
 
@@ -124,7 +124,7 @@ Used to identify vulnerable dependencies and known CVEs within application packa
 - Security reporting
 - NVD integration
 
-![Dependency Check](screenshots/dependency-check-tool.png)
+![Dependency Check](./docs/screenshots/dependency-check-tool.png)
 
 ---
 
@@ -148,7 +148,7 @@ If the configured Quality Gate fails, the pipeline automatically terminates and 
 
 ### SonarQube Server Configuration
 
-![SonarQube Server](screenshots/sonar-server.png)
+![SonarQube Server](./docs/screenshots/sonar-server.png)
 
 ---
 
@@ -170,7 +170,7 @@ Sensitive information is stored securely using Jenkins Credentials Manager and i
 
 ### Credentials Configuration
 
-![Credentials](screenshots/credentials.png)
+![Credentials](./docs/screenshots/credentials.png)
 
 ---
 
@@ -478,7 +478,7 @@ The Jenkins dashboard provides centralized visibility into all infrastructure an
 
 ### Dashboard
 
-![Jenkins Dashboard](screenshots/jenkins-dashboard.png)
+![Jenkins Dashboard](./docs/screenshots/jenkins-dashboard.png)
 
 ---
 

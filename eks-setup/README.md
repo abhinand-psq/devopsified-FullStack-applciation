@@ -440,9 +440,7 @@ Demonstrates:
 
 ### Screenshot
 
-```text
-docs/images/eks-cluster-overview.png
-```
+![EKS Cluster Overview](./docs/images/eks-cluster-overview.png)
 
 ---
 
@@ -456,9 +454,7 @@ Demonstrates:
 
 ### Screenshot
 
-```text
-docs/images/kubectl-get-nodes.png
-```
+![Managed Node Group](./docs/images/node-group.png)
 
 ---
 
@@ -472,10 +468,7 @@ Demonstrates:
 
 ### Screenshot
 
-```text
-docs/images/target-group-health.png
-```
-
+![AWS Target Group Health](./docs/images/aws-target-group-health.png)
 ---
 
 ## EC2 Worker Nodes
@@ -488,9 +481,7 @@ Demonstrates:
 
 ### Screenshot
 
-```text
-(docs/images/worker-nodes.png)
-```
+![Managed Node Group](./docs/images/ec2-worker-nodes.png)
 
 ---
 
@@ -575,6 +566,10 @@ AWSLoadBalancerControllerIAMPolicy
 ```text
 aws-load-balancer-controller
 ```
+The service account was created using IRSA and linked to an IAM role containing the AWS Load Balancer Controller permissions.
+
+![Service Account Configuration](./docs/images/iam-service-account.png)
+
 
 ### Helm Deployment
 
@@ -595,6 +590,9 @@ Chart: aws-load-balancer-controller
 ## Controller Validation
 
 Controller pods were verified after installation.
+Logs were inspected to validate successful startup and controller operation.
+
+![Controller Deployment](./docs/images/aws-lb-controller.png)
 
 ```bash
 kubectl get pods -n kube-system

@@ -12,7 +12,7 @@ The server hosts Jenkins and supporting DevOps tooling required across the entir
 
 ## Architecture
 
-![Jenkins Architecture](../docs/architecture/architecture.png)
+![Jenkins Architecture](../architecture/architecture.png)
 
 ### Core Responsibilities
 

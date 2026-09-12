@@ -112,6 +112,20 @@ All monitoring components were successfully deployed and running.
 
 ## Prometheus Data Source
 
+## Grafana Data Source Configuration
+
+The Grafana instance was automatically configured with Prometheus as the default metrics data source through the kube-prometheus-stack deployment.
+
+This allows Grafana dashboards to query Kubernetes metrics directly from Prometheus without additional manual configuration.
+
+### Prometheus Data Source
+
+![Grafana Prometheus Data Source](./images/prometheus-datasource.png.png)
+
+The screenshot shows the provisioned Prometheus data source available within Grafana and configured as the primary source for cluster monitoring dashboards.
+
+---
+
 Grafana was configured to use Prometheus as its primary metrics data source.
 
 Monitoring services included:
@@ -131,6 +145,25 @@ The Prometheus data source was successfully provisioned and available within Gra
 
 
 ## Cluster-Level Monitoring
+
+## Cluster Resource Monitoring Dashboard
+
+Grafana dashboards provide visibility into overall Kubernetes cluster resource utilization and namespace-level resource consumption.
+
+### Cluster Resource Dashboard
+
+![Cluster Resource Dashboard](./images/cluster-overview.pngNamespace Monitoring)
+
+The dashboard displays:
+
+- CPU Utilization
+- CPU Requests & Limits
+- Memory Utilization
+- Memory Requests & Limits
+- Namespace Resource Consumption
+- Workload Distribution
+
+This provides an overall view of cluster health and resource allocation across namespaces.
 
 Grafana dashboards provided visibility into cluster-wide resource utilization, including:
 
@@ -153,6 +186,34 @@ three-tier
 
 ## Namespace Monitoring
 
+## Namespace Resource Monitoring
+
+Grafana dashboards provide detailed visibility into resource usage across Kubernetes namespaces.
+
+### Namespace Metrics Dashboard
+
+![Namespace Resource Monitoring](./images/namespace-monitoring.png)
+
+The dashboard displays:
+
+- Namespace CPU Usage
+- CPU Requests & Limits
+- Memory Usage
+- Memory Requests & Limits
+- Network Throughput
+- Workload Distribution
+
+Observed namespaces include:
+
+- monitoring
+- argocd
+- kube-system
+- three-tier
+
+This enables comparison of resource consumption between platform services and application workloads.
+
+---
+
 Namespace dashboards provided visibility into:
 
 * Pod Count
@@ -170,6 +231,27 @@ This enabled comparison between application and system namespaces.
 ---
 
 ## Pod-Level Monitoring
+
+## Pod-Level Resource Monitoring
+
+Grafana dashboards provide workload-level observability by exposing metrics for individual pods running within the cluster.
+
+### Pod Monitoring Dashboard
+
+![Pod Resource Monitoring](./images/pod-monitoring.png)
+
+The dashboard displays:
+
+- Pod CPU Usage
+- CPU Quota
+- CPU Requests
+- CPU Limits
+- Memory Usage
+- Container Resource Consumption
+
+This level of observability helps identify resource-intensive workloads and verify application performance within Kubernetes.
+
+---
 
 Pod dashboards provided detailed metrics for individual workloads, including:
 
@@ -207,6 +289,37 @@ Service-level metrics included:
 ---
 
 ## Cluster Health Verification
+
+## Cluster Health Dashboard
+
+Grafana provides a consolidated health dashboard showing deployment, node, pod, and container status across the cluster.
+
+### Cluster Health Overview
+
+![Cluster Health Dashboard](./images/cluster-health.png)
+
+The dashboard provides visibility into:
+
+- Deployment Replicas
+- Updated Replicas
+- Unavailable Replicas
+- Node Availability
+- Running Pods
+- Pending Pods
+- Failed Pods
+- Container Status
+
+At the time of validation:
+
+- 2 Nodes Available
+- 24 Running Pods
+- 0 Pending Pods
+- 0 Failed Pods
+- 30 Running Containers
+
+These metrics confirmed that the EKS cluster and deployed workloads were operating normally.
+
+---
 
 Cluster health dashboards provided visibility into:
 

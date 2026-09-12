@@ -34,11 +34,11 @@ The following screenshots demonstrate the GitOps deployment status of the fronte
 
 ### Backend 
 
-![Backend Application Healthy and Synced](../screenshots/argocd-backend-healthy-synced.png)
+![Backend Application Healthy and Synced](./screenshots/argocd-backend-healthy-synced.png)
 
 ### Frontend
 
-![Frontend Application Healthy and Synced](../screenshots/argocd-frontend-healthy-synced.png)
+![Frontend Application Healthy and Synced](./screenshots/argocd-frontend-healthy-synced.png)
 
 Both applications are successfully synchronized with the desired state stored in Git and report a **Healthy** status in ArgoCD, indicating that the deployed Kubernetes resources match the configuration defined in the Git repository.
 
@@ -81,6 +81,24 @@ After installation, verify that all ArgoCD components are running successfully.
 kubectl get pods -n argocd
 ```
 
+Add:
+
+```markdown
+### ArgoCD Components Running
+
+The following screenshot shows all core ArgoCD components successfully running inside the `argocd` namespace after installation.
+
+Components include:
+
+- argocd-server
+- argocd-repo-server
+- argocd-application-controller
+- argocd-dex-server
+- argocd-redis
+- argocd-notifications-controller
+
+![ArgoCD Pods](./screenshots/argocd-pods.png)
+
 The ArgoCD namespace contains components responsible for:
 
 - Application synchronization
@@ -122,6 +140,17 @@ kubectl patch svc argocd-server \
 ```bash
 kubectl get svc argocd-server -n argocd
 ```
+
+Add:
+
+```markdown
+### ArgoCD External Access
+
+The `argocd-server` service was converted from the default `ClusterIP` service type to a `LoadBalancer` service.
+
+AWS automatically provisioned an external Elastic Load Balancer (ELB), providing browser access to the ArgoCD web interface.
+
+![ArgoCD LoadBalancer Service](./screenshots/Argocd-svc.png)
 
 AWS automatically provisions an external load balancer for Kubernetes Services of type `LoadBalancer`, enabling external access to the ArgoCD web UI.
 

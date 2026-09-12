@@ -491,6 +491,9 @@ The Jenkins dashboard provides centralized visibility into all infrastructure an
 - Infrastructure managed through Terraform
 - Kubernetes administration tooling integrated into Jenkins
 
+![Terraform output for EKS build](./docs/screenshots/terraform_eks-build-output.txt)
+Through this you can verify and confirm that the terraform code is able to build the eks with all the important configuration
+
 ## CI/CD Outcomes
 
 - Automated frontend and backend delivery pipelines

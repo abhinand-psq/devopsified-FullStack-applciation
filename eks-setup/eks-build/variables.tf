@@ -27,7 +27,7 @@ variable "ngw-name" {}
 variable "eks-sg" {}
 
 
-# EKS
+# this is for EKS ,,
 variable "is-eks-cluster-enabled" {}
 variable "cluster-version" {}
 variable "endpoint-private-access" {}

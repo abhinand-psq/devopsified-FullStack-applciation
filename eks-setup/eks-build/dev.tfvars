@@ -43,7 +43,7 @@ addons = [
   {
     name    = "kube-proxy"
     version = "v1.35.3-eksbuild.18"
-  },  # Add more addons as needed
+  },  
 ]
 
 /*addons = [
